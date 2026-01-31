@@ -1,7 +1,7 @@
 #pragma once
 
-#include "EasyHttpClient.hpp"
-#include "Metrics.hpp"
+#include <EasyHttpLib/EasyHttpClient>
+#include <MetricsModel/Metrics>
 #include <boost/asio/io_context.hpp>
 #include <boost/property_tree/ptree_fwd.hpp>
 #include <memory>

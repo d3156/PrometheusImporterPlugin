@@ -1,6 +1,4 @@
 #include "PrometheusClient.hpp"
-#include "EasyHttpClient.hpp"
-#include "Metrics.hpp"
 #include <Logger/Log.hpp>
 #include <boost/json/serialize.hpp>
 #include <boost/property_tree/ptree.hpp>

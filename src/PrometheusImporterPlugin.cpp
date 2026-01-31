@@ -7,11 +7,11 @@
 #include <filesystem>
 #include <memory>
 #include <string>
-#include <MetricsModel.hpp>
+#include <MetricsModel/MetricsModel>
 
 void PrometheusImporterPlugin::registerArgs(d3156::Args::Builder &bldr)
 {
-    bldr.setVersion("PrometheusImporterPlugin " + std::string(PROMETHEUS_IMPORTER_VERSION))
+    bldr.setVersion("PrometheusImporterPlugin " + std::string(PrometheusImporterPlugin_VERSION))
         .addOption(configPath, "PrometheusPath", "path to config for PrometheusImporterPlugin.json");
 }
 
