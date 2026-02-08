@@ -103,7 +103,8 @@ PrometheusImporterPlugin::~PrometheusImporterPlugin()
 void PrometheusImporterPlugin::onTimer(const boost::system::error_code &ec)
 {
     if (!ec) {
-        for (auto &instance : instances) instance->update();
+        for (auto &instance : instances)
+            net::co_spawn(MetricsModel::instance()->getIO(), instance->update(), net::detached);
         update_timer->expires_after(std::chrono::seconds(import_timer));
         update_timer->async_wait([this](const boost::system::error_code &e) { onTimer(e); });
     }

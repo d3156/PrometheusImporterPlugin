@@ -52,13 +52,13 @@ PrometheusClient::PrometheusClient(boost::asio::io_context &ioc, const std::vect
                                    const PrometheusClientInfo &info)
     : io_(ioc), metrics_(metrics)
 {
-    client_ = std::make_unique<d3156::EasyHttpClient>(ioc, info.url, "", info.authorization);
+    client_ = std::make_unique<d3156::AsyncHttpClient>(ioc, info.url, "", info.authorization);
 }
 
-void PrometheusClient::update()
+net::awaitable<void> PrometheusClient::update()
 {
     for (const auto &i : metrics_) {
-        resp_dynamic_body res = client_->get("/api/v1/query?query=" + i, "");
+        d3156::resp_dynamic_body res = co_await client_->getAsync("/api/v1/query?query=" + i, "");
         std::string body      = beast::buffers_to_string(res.body().data());
         try {
             json::value jv  = boost::json::parse(body);

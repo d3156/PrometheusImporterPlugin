@@ -1,6 +1,6 @@
 #pragma once
 
-#include <EasyHttpLib/EasyHttpClient>
+#include <EasyHttpLib/AsyncHttpClient>
 #include <MetricsModel/Metrics>
 #include <boost/asio/io_context.hpp>
 #include <boost/property_tree/ptree_fwd.hpp>
@@ -19,7 +19,7 @@ struct PrometheusClientInfo {
 class PrometheusClient
 {
     boost::asio::io_context &io_;
-    std::unique_ptr<d3156::EasyHttpClient> client_;
+    std::unique_ptr<d3156::AsyncHttpClient> client_;
     std::vector<std::string> metrics_;
     std::unordered_map<std::string, std::unique_ptr<Metrics::Metric>> metrics_instance;
 
@@ -27,5 +27,5 @@ public:
     PrometheusClient(boost::asio::io_context &ioc, const std::vector<std::string> &metrics,
                      const PrometheusClientInfo &info);
 
-    void update();
+    net::awaitable<void> update();
 };
