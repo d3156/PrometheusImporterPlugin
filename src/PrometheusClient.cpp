@@ -67,7 +67,7 @@ void PrometheusClient::update()
                 auto const &m   = e.at_pointer("/metric").as_object();
                 std::string key = json::serialize(m);
                 auto metric     = metrics_instance.find(key);
-                auto value = std::stoll(e.at_pointer("/value/1").get_string().data());
+                auto value      = std::stoll(e.at_pointer("/value/1").get_string().data());
 
                 if (metric == metrics_instance.end()) {
                     std::vector<Metrics::Tag> tags;
@@ -81,7 +81,7 @@ void PrometheusClient::update()
                     metrics_instance[key]           = std::make_unique<Metrics::Metric>(name, tags);
                     metrics_instance[key]->imported = true;
                     metrics_instance[key]->value_   = value;
-                    G_LOG(5, "Create metric:" <<metrics_instance[key]->toString());
+                    G_LOG(5, "Create metric:" << metrics_instance[key]->toString());
                     continue;
                 }
                 metric->second->value_ = value;

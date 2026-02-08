@@ -11,13 +11,13 @@
 
 void PrometheusImporterPlugin::registerArgs(d3156::Args::Builder &bldr)
 {
-    bldr.setVersion("PrometheusImporterPlugin " + std::string(PrometheusImporterPlugin_VERSION))
-        .addOption(configPath, "PrometheusPath", "path to config for PrometheusImporterPlugin.json");
+    bldr.setVersion(FULL_NAME).addOption(configPath, "PrometheusPath",
+                                         "path to config for PrometheusImporterPlugin.json");
 }
 
 void PrometheusImporterPlugin::registerModels(d3156::PluginCore::ModelsStorage &models)
 {
-    MetricsModel::instance() = RegisterModel("MetricsModel", new MetricsModel(), MetricsModel);
+    MetricsModel::instance() = models.registerModel<MetricsModel>();
 }
 
 void PrometheusImporterPlugin::postInit()
@@ -103,10 +103,8 @@ PrometheusImporterPlugin::~PrometheusImporterPlugin()
 void PrometheusImporterPlugin::onTimer(const boost::system::error_code &ec)
 {
     if (!ec) {
-        for (auto &instance : instances) instance->update(); 
+        for (auto &instance : instances) instance->update();
         update_timer->expires_after(std::chrono::seconds(import_timer));
-        update_timer->async_wait([this](const boost::system::error_code &e) {
-            onTimer(e);
-        });
+        update_timer->async_wait([this](const boost::system::error_code &e) { onTimer(e); });
     }
 }
