@@ -1,8 +1,8 @@
 #pragma once
 #include "PrometheusClient.hpp"
 #include <MetricsModel/Metrics>
-#include <PluginCore/IPlugin.hpp>
-#include <PluginCore/IModel.hpp>
+#include <PluginCore/IPlugin>
+#include <PluginCore/IModel>
 #include <memory>
 #include <vector>
 

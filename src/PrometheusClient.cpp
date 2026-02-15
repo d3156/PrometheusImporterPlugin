@@ -1,5 +1,5 @@
 #include "PrometheusClient.hpp"
-#include <Logger/Log.hpp>
+#include <PluginCore/Logger/Log>
 #include <boost/json/serialize.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <exception>
