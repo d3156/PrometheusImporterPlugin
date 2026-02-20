@@ -5,6 +5,7 @@ create_target(plugin)
 
 dependency(".." EasyHttpLib "https://gitlab.bubki.zip/d3156/EasyHttpLib.git")
 dependency(".." MetricsModel "https://gitlab.bubki.zip/d3156/MetricsModel.git")
+dependency(".." ConfiguratorModel "https://gitlab.bubki.zip/d3156/PluginConfigurator.git")
 
 find_package(Boost 1.8 REQUIRED COMPONENTS json thread system)
 target_link_libraries(PrometheusImporterPlugin PRIVATE Boost::system Boost::thread Boost::json)

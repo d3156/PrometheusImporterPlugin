@@ -20,30 +20,27 @@ std::string base64_encode(const std::string &data)
     return tmp.append((3 - data.size() % 3) % 3, '=');
 }
 
-bool PrometheusClientInfo::parse(const ptree &pt)
+bool PrometheusClientInfo::parse(PrometheusClientConfig &conf)
 {
-    url           = pt.get<std::string>("url", "");
-    auto auth_str = pt.get<std::string>("auth_type", "");
-    auto token    = pt.get<std::string>("token", "");
-    auto username = pt.get<std::string>("username", "");
-    auto password = pt.get<std::string>("password", "");
+    url = conf.url;
     if (url.empty()) {
         R_LOG(1, "Error to parse source key url: it was empty, or parse incomplete!");
         return false;
     }
-    if (auth_str == "basic") {
-        if (username.empty() || password.empty()) {
+    if (conf.auth_type.value == "basic") {
+        if (conf.credentials.username.value.empty() || conf.credentials.password.value.empty()) {
             R_LOG(1, "Error to parse source keys username, password: it was empty, or parse incomplete!");
             return false;
         }
-        authorization = "Basic " + base64_encode(username + ":" + password);
+        authorization =
+            "Basic " + base64_encode(conf.credentials.username.value + ":" + conf.credentials.password.value);
     }
-    if (auth_str == "bearer_token") {
-        if (token.empty()) {
+    if (conf.auth_type.value == "bearer_token") {
+        if (conf.credentials.token.value.empty()) {
             R_LOG(1, "Error to parse source key token: it was empty, or parse incomplete!");
             return false;
         }
-        authorization = "Bearer " + token;
+        authorization = "Bearer " + conf.credentials.token.value;
     }
     return true;
 };
@@ -59,7 +56,7 @@ net::awaitable<void> PrometheusClient::update()
 {
     for (const auto &i : metrics_) {
         d3156::resp_dynamic_body res = co_await client_->getAsync("/api/v1/query?query=" + i, "");
-        std::string body      = beast::buffers_to_string(res.body().data());
+        std::string body             = beast::buffers_to_string(res.body().data());
         try {
             json::value jv  = boost::json::parse(body);
             auto const &res = jv.at_pointer("/data/result").as_array();
