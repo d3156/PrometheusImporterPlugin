@@ -10,7 +10,7 @@
 #include <BaseConfig>
 
 struct PrometheusClientConfig : public d3156::Config {
-    PrometheusClientConfig(d3156::Config *parent) : d3156::Config("", parent) {}
+    PrometheusClientConfig() : d3156::Config("") {}
     CONFIG_STRING(url, "");
     CONFIG_ENUM(auth_type, "none", "none|basic|bearer_token");
     struct Credentials : public d3156::Config {
