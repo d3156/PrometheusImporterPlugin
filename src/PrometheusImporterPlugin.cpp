@@ -26,7 +26,7 @@ void PrometheusImporterPlugin::parseSettings()
 {
     for (auto &i : conf.sources.items) {
         PrometheusClientInfo info;
-        if (info.parse(i))
+        if (info.parse(*i))
             instances.push_back(
                 std::make_unique<PrometheusClient>(MetricsModel::instance()->getIO(), conf.metrics.items, info));
     }

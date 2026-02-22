@@ -45,10 +45,13 @@ bool PrometheusClientInfo::parse(PrometheusClientConfig &conf)
     return true;
 };
 
-PrometheusClient::PrometheusClient(boost::asio::io_context &ioc, const std::vector<std::string> &metrics,
+PrometheusClient::PrometheusClient(boost::asio::io_context &ioc,
+                                   const std::vector<std::unique_ptr<std::string>> &metrics,
                                    const PrometheusClientInfo &info)
-    : io_(ioc), metrics_(metrics)
+    : io_(ioc)
 {
+    metrics_.reserve(metrics.size());
+    for (const auto &i : metrics) metrics_.push_back(*i);
     client_ = std::make_unique<d3156::AsyncHttpClient>(ioc, info.url, "", info.authorization);
 }
 

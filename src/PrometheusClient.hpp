@@ -36,7 +36,7 @@ class PrometheusClient
     std::unordered_map<std::string, std::unique_ptr<Metrics::Metric>> metrics_instance;
 
 public:
-    PrometheusClient(boost::asio::io_context &ioc, const std::vector<std::string> &metrics,
+    PrometheusClient(boost::asio::io_context &ioc, const std::vector<std::unique_ptr<std::string>> &metrics,
                      const PrometheusClientInfo &info);
 
     net::awaitable<void> update();
